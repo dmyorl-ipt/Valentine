@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>С Днём Святого Валентина!</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #ffe6e6;
+            margin: 0;
+            padding: 0;
+        }
+        .hidden {
+            display: none;
+        }
+        .hearts {
+            font-size: 50px;
+            color: red;
+            margin: 20px 0;
+            animation: pulse 1s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+        .photo-frame {
+            display: inline-block;
+            width: 200px;
+            height: 200px;
+            margin: 10px;
+            perspective: 1000px;
+        }
+        .photo-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+            cursor: pointer;
+        }
+        .photo-inner.is-flipped {
+            transform: rotateY(180deg);
+        }
+        .photo-front, .photo-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border: 5px solid pink;
+            border-radius: 10px;
+        }
+        .photo-front {
+            background-size: cover;
+            background-position: center;
+        }
+        .photo-back {
+            background-color: #fff;
+            color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transform: rotateY(180deg);
+            padding: 10px;
+            box-sizing: border-box;
+        }
+        .message {
+            font-size: 24px;
+            color: #333;
+            margin: 20px;
+        }
+        /* Стили для всплывающего окна */
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #fff;
+            padding: 20px;
+            border: 2px solid #333;
+            border-radius: 10px;
+            z-index: 1000;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+        .popup h2 {
+            margin-top: 0;
+        }
+        .popup button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            background-color: #ff4d4d;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .popup button:hover {
+            background-color: #ff1a1a;
+        }
+        /* Стили для таймера */
+        .timer {
+            font-size: 24px;
+            font-weight: bold;
+            color: #ff3333;
+            background: #fff;
+            display: inline-block;
+            padding: 10px 20px;
+            border-radius: 10px;
+            border: 2px solid #ff3333;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Скоро День Святого Валентина! 💖</h1>
+    <div class="timer" id="timer"></div>
+
+    <div id="content" class="hidden">
+        <div class="hearts">❤️❤️❤️</div>
+          <div class="message">
+            Дорогая [Имя],<br>
+            С Днём Святого Валентина!<br>
+            Ты – самое прекрасное, что случалось в моей жизни.<br>
+            Люблю тебя бесконечно!
+        </div>
+        <div class="photo-frame">
+            <div class="photo-inner" onclick="flipCard(this);">
+                <div class="photo-front" style="background-image: url('photo1.jpg');"></div>
+                <div class="photo-back">Текст для первой фотографии</div>
+            </div>
+        </div>
+        <div class="photo-frame">
+            <div class="photo-inner" onclick="flipCard(this);">
+                <div class="photo-front" style="background-image: url('photo2.jpg');"></div>
+                <div class="photo-back">Текст для второй фотографии</div>
+            </div>
+        </div>
+        <div class="photo-frame">
+            <div class="photo-inner" onclick="flipCard(this);">
+                <div class="photo-front" style="background-image: url('photo3.jpg');"></div>
+                <div class="photo-back">Текст для третьей фотографии</div>
+            </div>
+        </div>
+        <div class="hearts">❤️❤️❤️</div>
+    </div>
+
+    <!-- Всплывающее окно -->
+    <div id="popup" class="popup">
+        <h2>Сюрприз!</h2>
+        <p>Вы открыли все фотографии! С Днём Святого Валентина!</p>
+        <button onclick="closePopup()">Закрыть</button>
+    </div>
+
+    <script>
+        function initializeTimer(targetDate) {
+            const timerElement = document.getElementById('timer');
+
+            function updateTimer() {
+                const now = new Date().getTime();
+                const timeLeft = targetDate - now;
+
+                if (timeLeft <= 0) {
+                    timerElement.innerHTML = "С Днём Святого Валентина! 💝";
+                    document.getElementById('content').classList.remove('hidden');
+                    return;
+                }
+
+                const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+                timerElement.innerHTML = `До праздника осталось: <br> <strong>${days}</strong> дней, <strong>${hours}</strong> ч., <strong>${minutes}</strong> мин., <strong>${seconds}</strong> сек.`;
+            }
+
+            updateTimer();
+            setInterval(updateTimer, 1000);
+        }
+
+        function flipCard(element) {
+            element.classList.toggle('is-flipped');
+            checkAllFlipped();
+        }
+
+        function checkAllFlipped() {
+            const cards = document.querySelectorAll('.photo-inner');
+            const allFlipped = Array.from(cards).every(card => card.classList.contains('is-flipped'));
+            if (allFlipped) {
+                showPopup();
+            }
+        }
+
+        function showPopup() {
+            document.getElementById('popup').style.display = 'block';
+        }
+
+        function closePopup() {
+            document.getElementById('popup').style.display = 'none';
+        }
+
+        const revealDate = new Date('2025-02-10T00:00:00');
+        initializeTimer(revealDate);
+    </script>
+</body>
+</html>
