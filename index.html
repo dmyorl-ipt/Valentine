@@ -14,12 +14,17 @@
         background-color: #ffe6e6;
         margin: 0;
         padding: 0;
-        background-image: url('https://png.pngtree.com/thumb_back/fw800/background/20231227/pngtree-romantic-love-seamless-pattern-endless-heart-background-for-happy-valentine-s-image_13886697.png');
+        /*background-image: url('https://png.pngtree.com/thumb_back/fw800/background/20231227/pngtree-romantic-love-seamless-pattern-endless-heart-background-for-happy-valentine-s-image_13886697.png');*/
             background-size: cover;
             background-position: center;
+            background-repeat: no-repeat;
       }
       h1{
         padding: 20px;
+        background: #fff;
+        display: inline-block;
+        border-radius: 10px;
+        border: 2px solid #ff3333;
       }
   
       .hidden {
@@ -205,7 +210,8 @@
 
           if (timeLeft <= 0) {
             timerElement.innerHTML = "С Днём Святого Валентина! 💝";
-            document.getElementById('header-soon').innerHTML= '';
+            document.getElementById('header-soon').remove();
+            document.body.style.backgroundImage="url(https://png.pngtree.com/thumb_back/fw800/background/20231227/pngtree-romantic-love-seamless-pattern-endless-heart-background-for-happy-valentine-s-image_13886697.png)"
             document.getElementById("content").classList.remove("hidden");
             return;
           }
