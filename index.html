@@ -18,6 +18,9 @@
             background-size: cover;
             background-position: center;
       }
+      h1{
+        padding: 20px;
+      }
   
       .hidden {
         display: none;
@@ -144,7 +147,7 @@
     </style>
   </head>
   <body>
-    <h1>Скоро День Святого Валентина! 💖</h1>
+    <h1 id="header-soon">Скоро День Святого Валентина! 💖</h1>
     <div class="timer" id="timer"></div>
 
     <div id="content" class="hidden">
@@ -202,6 +205,7 @@
 
           if (timeLeft <= 0) {
             timerElement.innerHTML = "С Днём Святого Валентина! 💝";
+            document.getElementById('header-soon').innerHTML= '';
             document.getElementById("content").classList.remove("hidden");
             return;
           }
